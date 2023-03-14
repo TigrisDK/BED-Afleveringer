@@ -33,3 +33,5 @@ namespace WebApi.Models
         public List<Job>? Jobs { get; set; }
         public List<Expense>? Expenses { get; set; }
     }
+
+}
