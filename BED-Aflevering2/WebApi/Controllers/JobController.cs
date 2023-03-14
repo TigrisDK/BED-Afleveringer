@@ -6,6 +6,7 @@ using AutoMapper;
 using WebApi.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -22,6 +23,7 @@ namespace WebApi.Controllers
         }
 
 
+        // get delen
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobDtoWExpenses>>> GetJobs()
         {
@@ -52,10 +54,25 @@ namespace WebApi.Controllers
                 allJobs.Add(alljobs);
             }
 
-
-
+            return allJobs;
         }
 
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Job>> GetJob(long id)
+        {
+            var job = await context_.Jobs.FindAsync(id);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            return job;
+        }
+
+
+        // put delen
 
 
 
