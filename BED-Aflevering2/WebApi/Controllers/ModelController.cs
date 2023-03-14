@@ -67,5 +67,26 @@ namespace WebApi.Controllers
             }
             return retModel;
         }
+
+        // DELETE: api/Models/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteModel(long id)
+        {
+            var model = await _context.Models.FindAsync(id);
+            if (model == null) 
+            {
+                return NotFound("Model not found");
+            }
+
+            _context.Models.Remove(model);
+            await _context.SaveChangesAsync();
+
+            return Accepted();
+        }
+
+        private bool ModelExists(long id)
+        {
+            return _context.Models.Any(e => e.ModelId == id);
+        }
     }
 }
