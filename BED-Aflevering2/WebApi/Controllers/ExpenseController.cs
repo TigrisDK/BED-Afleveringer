@@ -25,8 +25,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<JobDtoWExpenses>> PostExpense(ExpenseDtoPost expense)
         {
-            var model = _context.Find<Model>(expense.ModelID);
-            var job = _context.Find<Job>(expense.JobID);
+            var model = _context.Find<Model>(expense.ModelId);
+            var job = _context.Find<Job>(expense.JobId);
             
             if (model == null || job == null) 
             { 
@@ -53,7 +53,7 @@ namespace WebApi.Controllers
                              select m.FirstName;
             List<string> mName = modelNames.ToList();
             var customerName = from j in _context.Jobs
-                               where j.JobId == expense.JobID
+                               where j.JobId == expense.JobId
                                select j.Customer;
             List<string> sCustomer = customerName.ToList();
 
