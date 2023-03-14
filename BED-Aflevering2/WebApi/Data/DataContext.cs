@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Internal;
 using WebApi.Models;
 
 
@@ -9,10 +9,10 @@ namespace WebApi.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<Model> model => Set<Model>();
-        public DbSet<Job> job => Set<Job>();
+        public DbSet<Model> Models => Set<Model>();
+        public DbSet<Job> Jobs => Set<Job>();
 
-        public DbSet<Expense> expense => Set<Expense>();
+        public DbSet<Expense> Expenses => Set<Expense>();
 
     }
 }
