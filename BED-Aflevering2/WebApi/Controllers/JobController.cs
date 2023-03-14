@@ -13,13 +13,13 @@ namespace WebApi.Controllers
     [ApiController]
     public class JobController : ControllerBase 
     {
-        private readonly DataContext context_;
-        private readonly IMapper mapper_;
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
         public JobController(DataContext context, IMapper mapper)
         {
-            context_= context;
-            mapper_ = mapper;
+            _context= context;
+            _mapper = mapper;
         }
 
 
@@ -27,7 +27,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JobDtoWExpenses>>> GetJobs()
         {
-            var job = await context_.Jobs.ToListAsync();
+            var job = await _context.Jobs.ToListAsync();
             if(job == null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace WebApi.Controllers
             var allJobs = new List<JobDtoWExpenses>();
             foreach (var Item in job)
             {
-                context_.Entry(Item).Collection(job => job.Models).Load();
+                _context.Entry(Item).Collection(job => job.Models).Load();
 
                 var alljobs = Item.Adapt<JobDtoWExpenses>();
 
@@ -61,7 +61,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Job>> GetJob(long id)
         {
-            var job = await context_.Jobs.FindAsync(id);
+            var job = await _context.Jobs.FindAsync(id);
 
             if (job == null)
             {
