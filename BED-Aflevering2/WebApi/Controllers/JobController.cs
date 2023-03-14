@@ -5,6 +5,7 @@ using WebApi.Hubs;
 using AutoMapper;
 using WebApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Mapster;
 
 
 namespace WebApi.Controllers
@@ -33,28 +34,28 @@ namespace WebApi.Controllers
                 return NotFound();
             }
 
-            var allJobs = new List<JobDtoWExpenses>();
+            var all_Job = new List<JobDtoWExpenses>();
             foreach (var Item in job)
             {
                 _context.Entry(Item).Collection(job => job.Models).Load();
 
-                var alljobs = Item.Adapt<JobDtoWExpenses>();
+                var all_job = Item.Adapt<JobDtoWExpenses>();
 
-                alljobs.JobId = Item.JobId;
+                all_job.JobId = Item.JobId;
 
                 if (Item.Models != null)
                 {
-                    alljobs.ModelNames = new List<string>();
+                    all_job.Model_Name = new List<string>();
                     foreach (var model in Item.Models)
                     {
                         string modelfullname = model.FirstName + " " + model.LastName;
-                        alljobs.ModelNames.Add(modelfullname);
+                        all_job.Model_Name.Add(modelfullname);
                     }
                 }
-                allJobs.Add(alljobs);
+                all_Job.Add(all_job);
             }
 
-            return allJobs;
+            return all_Job;
         }
 
 
@@ -73,6 +74,8 @@ namespace WebApi.Controllers
 
 
         // put delen
+
+
 
 
 

@@ -2,7 +2,7 @@
 
 namespace WebApi.Models
 {
-    public class JobDtoWExpenses
+    public class JobDtoWExpenses : JobDtoSimple
     {
         public long JobId { get; set; }
         public string? Customer { get; set; }

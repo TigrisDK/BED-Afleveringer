@@ -11,5 +11,7 @@ namespace WebApi.Models
         public string? Location { get; set; }
         [MaxLength(2000)]
         public string? Comments { get; set; }
+
+        public List<string> Model_Name { get; set; }
     }
 }
