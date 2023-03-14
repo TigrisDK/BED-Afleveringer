@@ -65,5 +65,10 @@ namespace WebApi.Controllers
 
             return Accepted(_mapper.Map<JobDtoWExpenses>(job));
         }
+
+        private bool ExpenseExists(long id)
+        {
+            return _context.Expenses.Any(e => e.ExpenseId == id);
+        }
     }
 }
