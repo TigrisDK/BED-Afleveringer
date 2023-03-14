@@ -68,7 +68,7 @@ namespace WebApi.Controllers
             return retModel;
         }
 
-        // DELETE: api/Models/5
+        // DELETE: api/Model/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteModel(long id)
         {

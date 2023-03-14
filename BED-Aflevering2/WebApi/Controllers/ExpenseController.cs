@@ -66,6 +66,24 @@ namespace WebApi.Controllers
             return Accepted(_mapper.Map<JobDtoWExpenses>(job));
         }
 
+        
+        /*
+        // DELETE: api/Expense/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(long id)
+        {
+            var expense = await _context.Expenses.FindAsync(id);
+            if (expense == null)
+            {
+                return NotFound("Expense not found");
+            }
+
+            _context.Expenses.Remove(expense);
+            await _context.SaveChangesAsync();
+
+            return Accepted();
+        }*/
+
         private bool ExpenseExists(long id)
         {
             return _context.Expenses.Any(e => e.ExpenseId == id);
