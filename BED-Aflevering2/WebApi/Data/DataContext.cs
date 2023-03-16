@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using WebApi.Models;
-
+using WebApi.Models.Expense;
+using WebApi.Models.Job;
+using WebApi.Models.Model;
 
 namespace WebApi.Data
 {

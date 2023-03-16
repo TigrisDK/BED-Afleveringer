@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebApi.Models
+namespace WebApi.Models.Expense
 {
     public class Expense
     {

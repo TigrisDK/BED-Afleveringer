@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.SignalR;
 using WebApi.Data;
 using WebApi.Hubs;
 using AutoMapper;
-using WebApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Mapster;
-
+using WebApi.Models.Job;
 
 namespace WebApi.Controllers
 {

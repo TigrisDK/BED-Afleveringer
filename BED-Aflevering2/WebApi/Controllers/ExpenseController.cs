@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.SignalR;
 using WebApi.Data;
 using WebApi.Hubs;
 using AutoMapper;
-using WebApi.Models;
+using WebApi.Models.Model;
+using WebApi.Models.Job;
+using WebApi.Models.Expense;
 
 namespace WebApi.Controllers
 {

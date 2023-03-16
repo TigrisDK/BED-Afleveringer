@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebApi.Models.Expense;
 
-namespace WebApi.Models
+namespace WebApi.Models.Job
 {
-    public class JobDtoSimple
+    public class JobDtoWExpenses : JobDtoSimple
     {
+        public long JobId { get; set; }
         public string? Customer { get; set; }
         public DateTime StartDate { get; set; }
         public int Days { get; set; }
@@ -11,7 +13,6 @@ namespace WebApi.Models
         public string? Location { get; set; }
         [MaxLength(2000)]
         public string? Comments { get; set; }
-
-        public List<string> Model_Name { get; set; }
+        public List<ExpenseDto>? Expenses { get; set; }
     }
 }
