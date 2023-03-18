@@ -24,38 +24,38 @@ namespace WebApi.Controllers
 
 
         // get delen
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobDtoWExpenses>>> GetJobs()
-        {
-            var job = await _context.Jobs.ToListAsync();
-            if(job == null)
-            {
-                return NotFound();
-            }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<JobDtoWExpenses>>> GetJobs()
+        //{
+        //    var job = await _context.Jobs.ToListAsync();
+        //    if(job == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var all_Job = new List<JobDtoWExpenses>();
-            foreach (var Item in job)
-            {
-                _context.Entry(Item).Collection(job => job.Models).Load();
+        //    var all_Job = new List<JobDtoWExpenses>();
+        //    foreach (var Item in job)
+        //    {
+        //        _context.Entry(Item).Collection(job => job.Models).Load();
 
-                var all_job = Item.Adapt<JobDtoWExpenses>();
+        //        var all_job = Item.Adapt<JobDtoWExpenses>();
 
-                all_job.JobId = Item.JobId;
+        //        all_job.JobId = Item.JobId;
 
-                if (Item.Models != null)
-                {
-                    all_job.Model_Name = new List<string>();
-                    foreach (var model in Item.Models)
-                    {
-                        string modelfullname = model.FirstName + " " + model.LastName;
-                        all_job.Model_Name.Add(modelfullname);
-                    }
-                }
-                all_Job.Add(all_job);
-            }
+        //        if (Item.Models != null)
+        //        {
+        //            all_job.Model_Name = new List<string>();
+        //            foreach (var model in Item.Models)
+        //            {
+        //                string modelfullname = model.FirstName + " " + model.LastName;
+        //                all_job.Model_Name.Add(modelfullname);
+        //            }
+        //        }
+        //        all_Job.Add(all_job);
+        //    }
 
-            return all_Job;
-        }
+        //    return all_Job;
+        //}
 
 
         [HttpGet("{id}")]
@@ -73,9 +73,6 @@ namespace WebApi.Controllers
 
 
         // post delen
-
-
-
 
     }
 }

@@ -1,10 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using Mapster;
+using WebApi.Data;
+using WebApi.Models.Expense;
+using WebApi.Models.Job;
 
 namespace WebApi.Models.Model
 {
-    public class Model
+    public class ModelDtoFull
     {
         public long ModelId { get; set; }
         [MaxLength(64)]
@@ -31,8 +34,20 @@ namespace WebApi.Models.Model
         public string? HairColor { get; set; }
         [MaxLength(1000)]
         public string? Comments { get; set; }
-        public List<Job.Job>? Jobs { get; set; }
+    }
+
+    public class ModelsDTO : ModelDtoFull
+    {
+        public List<JobListExpenseDTO>? Jobs { get; set; }
         public List<Expense.Expense>? Expenses { get; set; }
     }
 
+    public class ModelNamesDTO
+    {
+        public long ModelId { get; set; }
+        [MaxLength(64)]
+        public string? FirstName { get; set; }
+        [MaxLength(32)]
+        public string? LastName { get; set; }
+    }
 }
