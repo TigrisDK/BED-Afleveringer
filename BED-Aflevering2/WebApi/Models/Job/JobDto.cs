@@ -17,25 +17,25 @@ namespace WebApi.Models.Job
         
     }
 
-    public class JobListModelDTO : JobDto
+    public class JobListModelDto : JobDto
     {
         public List<Model.Model>? Models { get; set; }
 
     }
 
-    public class JobListModelNamesDTO : JobDto
+    public class JobListModelNamesDto : JobDto
     {
-        public List<ModelNamesDTO>? Models { get; set; }
+        public List<ModelNameDto>? Models { get; set; }
     }
 
 
-    public class JobListExpenseDTO : JobDto
+    public class JobListExpenseDto : JobDto
     {
         public List<Expense.Expense>? Expenses { get; set; }
 
     }
 
-    public class JobPutDTO
+    public class JobPutDto
     {
         public long JobId { get; set; }
 

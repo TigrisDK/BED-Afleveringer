@@ -28,8 +28,6 @@ namespace WebApi.Controllers
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
 
-            //await _hubContext.Clients.All.SendAsync("expenseadded", expense);
-
             return CreatedAtAction("GetExpense", new { id = expense.ExpenseId }, expense);
         }
 

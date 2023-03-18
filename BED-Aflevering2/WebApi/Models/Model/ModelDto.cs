@@ -36,13 +36,13 @@ namespace WebApi.Models.Model
         public string? Comments { get; set; }
     }
 
-    public class ModelsDTO : ModelDtoFull
+    public class ModelDto : ModelDtoFull
     {
-        public List<JobListExpenseDTO>? Jobs { get; set; }
+        public List<JobListExpenseDto>? Jobs { get; set; }
         public List<Expense.Expense>? Expenses { get; set; }
     }
 
-    public class ModelNamesDTO
+    public class ModelNameDto
     {
         public long ModelId { get; set; }
         [MaxLength(64)]
