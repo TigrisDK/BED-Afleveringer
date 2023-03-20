@@ -55,7 +55,7 @@ namespace WebApi.Controllers
 
             if (id != model.ModelId)
             {
-                return BadRequest("The id in the url is different from the id in the body.");
+                return BadRequest("Id for url is different from the id in the body.");
             }
 
             _context.Entry(model.Adapt<Model>()).State = EntityState.Modified;

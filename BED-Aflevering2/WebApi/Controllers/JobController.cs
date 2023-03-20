@@ -61,7 +61,7 @@ namespace WebApi.Controllers
 
             if (id != job.JobId)
             {
-                return BadRequest("The id does not match a job id");
+                return BadRequest("Id not match a job id");
             }
 
             _context.Entry(job.Adapt<Job>()).State = EntityState.Modified;
@@ -96,7 +96,7 @@ namespace WebApi.Controllers
             Ok(_context.Jobs.Add(job.Adapt<Job>()));
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetJob", new { id = job.JobId }, job);
+            return CreatedAtAction("PostJob", new { id = job.JobId }, job);
         }
 
         [HttpPut("{JobId}/{ModelId}")]
@@ -110,7 +110,7 @@ namespace WebApi.Controllers
             if (job == null) return NotFound();
 
             var model = await _context.Models.SingleAsync(m => m.ModelId == ModelId);
-            if (model == null) return NotFound("The Model with the specified id does not exist");
+            if (model == null) return NotFound(" Model with the specified id does not exist");
             if (job.Models == null) return NotFound("job.Models is null!?");
             if (job.Models.Contains(model) == false) ((List<Model>)(job.Models)).Add(model);
 
@@ -146,7 +146,7 @@ namespace WebApi.Controllers
             if (job == null) return NotFound();
 
             var model = await _context.Models.SingleAsync(m => m.ModelId == ModelId);
-            if (model == null) return NotFound("The Model with the specified id does not exist");
+            if (model == null) return NotFound("Model with the specified id does not exist");
             if (job.Models == null) return NotFound("job.Models is null!?");
             if (job.Models.Contains(model) == true) ((List<Model>)(job.Models)).Remove(model);
             else return NotFound("Job does not contain Job. Use [PUT] to add");
