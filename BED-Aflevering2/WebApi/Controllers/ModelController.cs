@@ -39,6 +39,7 @@ namespace WebApi.Controllers
             return model;
         }
 
+        //Opret ny model – kun grunddata – ikke jobs og udgifter
         [HttpPost]
         public async Task<ActionResult<ModelDtoFull>> PostModel(ModelDtoFull model)
         {
@@ -79,6 +80,7 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
+        //Slette en model
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteModel(long id)
         {
