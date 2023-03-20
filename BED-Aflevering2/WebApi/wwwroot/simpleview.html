@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<!-- Start the server with F5 or ctrl-F5. Then open this file in another browser (or tab)
+     with this url: https://localhost:7004/simpleview.html -->
+<head>
+    <meta charset="utf-8" />
+    <title>Simple SignalR client</title>
+</head>
+<body>
+    <h1>Simple SignalR client</h1>
+    <h3>Server counter</h3>
+    <label>Server count: </label><input type="text" id="serverCounter" readonly />
+    <br />
+    <input type="button" id="countButton" value="Count++" />
+    <hr />
+    <script src="https://unpkg.com/@microsoft/signalr@3.0.1/dist/browser/signalr.js" crossorigin="anonymous"></script>
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/Hub").build();
+
+        connection.on("countUpdate", function (count) {
+            console.log("countUpdate: " + count);
+            document.getElementById("serverCounter").value = count;
+        });
+
+        connection.start().then(function () {
+            console.log("Connected");
+        }).catch(function (err) {
+            console.error(err.toString());
+        });
+
+        document.getElementById("countButton").addEventListener("click", function (event) {
+            fetch('api/count/inc')
+                .then()
+                .catch((err) => {
+                    console.log(err.toString());
+                });
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>

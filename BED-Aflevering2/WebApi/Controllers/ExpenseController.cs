@@ -6,6 +6,7 @@ using AutoMapper;
 using WebApi.Models.Model;
 using WebApi.Models.Job;
 using WebApi.Models.Expense;
+using System.Diagnostics.Metrics;
 
 namespace WebApi.Controllers
 {
@@ -14,22 +15,25 @@ namespace WebApi.Controllers
     public class ExpenseController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly IHubContext<MessageHub> _hub;
+        private readonly IHubContext<CountHub> _hub;
 
-        public ExpenseController(DataContext context, IHubContext<MessageHub> hub)
+        public ExpenseController(DataContext context, IHubContext<CountHub> hub)
         {
             _context = context;
             _hub = hub;
         }
 
         [HttpPost]
-
         public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
 
+            //adding counterhub
+            //await _context.AddAsync(_context.Expenses.Count());
+
             return CreatedAtAction("PostExpense", new { id = expense.ExpenseId }, expense);
+
         }
 
     }
