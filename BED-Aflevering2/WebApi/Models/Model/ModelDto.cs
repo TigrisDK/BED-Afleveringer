@@ -34,6 +34,8 @@ namespace WebApi.Models.Model
         public string? HairColor { get; set; }
         [MaxLength(1000)]
         public string? Comments { get; set; }
+
+        public List<Job.Job>? Jobs { get; set; }
     }
 
     public class ModelDto : ModelDtoFull
@@ -49,5 +51,7 @@ namespace WebApi.Models.Model
         public string? FirstName { get; set; }
         [MaxLength(32)]
         public string? LastName { get; set; }
+
+       // public List<JobListExpenseDto>? Jobs { get; set; }
     }
 }

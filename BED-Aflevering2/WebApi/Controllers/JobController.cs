@@ -47,58 +47,13 @@ namespace WebApi.Controllers
             return Ok(job.Adapt<JobListExpenseDto>());
         }
 
-        // get by model id
-        [HttpGet("withmodel/{id}")]
-        public async Task<ActionResult<Job>> GetJobWithModel(long id)
+        [HttpGet("model/{modelId}")]
+        public async Task<IList<ModelDtoFull>> GetJobModel(long modelId)
         {
-            var jobs = await _context.Jobs.Include(j => j.Models).ProjectToType<JobListModelDto>().ToListAsync();
-            var jobsWithModel = new List<JobListModelDto>();
+            var model = await _context.Models.Where(x => x.ModelId == modelId).ProjectToType<ModelDtoFull>().ToListAsync();
+            return model;
 
-            if (jobs == null) return NotFound("Null");
-
-            foreach (var job in jobs)
-            {
-                if (job.Models != null)
-                {
-                    foreach (var model in job.Models)
-                    {
-                        if (model.ModelId == id)
-                        {
-                            jobsWithModel.Add(job);
-                        }
-                    }
-                }
-            }
-
-            return Ok(jobsWithModel);
         }
-
-        // get by model 
-        //[HttpGet("bymodel/{id}")]
-        //public async Task<ActionResult<Job>> GetJobByModel(long id)
-        //{
-        //    var jobs = await _context.Jobs.Include(j => j.Models).ProjectToType<JobListModelDto>().ToListAsync();
-        //    var jobsWModel = new List<JobListModelDto>();
-
-        //    if (jobs == null) return NotFound("Null");
-
-        //    foreach (var job in jobs)
-        //    {
-        //        if (job.Models != null)
-        //        {
-        //            foreach (var model in job.Models)
-        //            {
-        //                if (model.ModelId == id)
-        //                {
-        //                    jobsForModel.Add(job);
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return Ok(jobsForModel);
-        //}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutJob(long id, JobPutDto job)
