@@ -19,12 +19,14 @@ namespace WebApi.Controllers
             TypeAdapterConfig<ModelDtoFull, Model>.NewConfig().IgnoreNullValues(true);
         }
 
+        //Hente en liste med alle modeller – uden data for deres jobs eller udgifter
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Model>>> GetModels()
         {
             return Ok(await _context.Models.ProjectToType<ModelDtoFull>().ToListAsync());
         }
 
+        //Hente model med den angivne ModelId inklusiv modellens jobs og udgifter
         // GET: api/Models/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Model>> GetModel(long id)
@@ -49,6 +51,7 @@ namespace WebApi.Controllers
             return CreatedAtAction("GetModel", new { id = model.ModelId }, model);
         }
 
+        //Opdatere en model – kun grunddata – ikke jobs og udgifter
         [HttpPut("{id}")]
         public async Task<IActionResult> PutModel(long id, ModelDtoFull model)
         {

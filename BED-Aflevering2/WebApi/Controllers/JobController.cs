@@ -90,6 +90,7 @@ namespace WebApi.Controllers
             return _context.Jobs.Any(e => e.JobId == id);
         }
 
+        //Opret nyt job
         [HttpPost]
         public async Task<ActionResult<Job>> PostJob(JobDto job)
         {
@@ -99,6 +100,7 @@ namespace WebApi.Controllers
             return CreatedAtAction("PostJob", new { id = job.JobId }, job);
         }
 
+        //Opdatere et job – kun StartDate, Days, Location og Comments kan ændres
         [HttpPut("{JobId}/{ModelId}")]
         public async Task<ActionResult<Model>> PutModelToJob(long JobId, long ModelId)
         {
@@ -118,7 +120,7 @@ namespace WebApi.Controllers
             return NoContent();
         }
 
-
+        //Slette et job
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJob(long id)
         {
