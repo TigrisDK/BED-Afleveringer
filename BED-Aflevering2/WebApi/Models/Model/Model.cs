@@ -31,7 +31,7 @@ namespace WebApi.Models.Model
         public string? HairColor { get; set; }
         [MaxLength(1000)]
         public string? Comments { get; set; }
-        public ICollection<Job.Job>? Jobs { get; set; }
+        public List<Job.Job>? Jobs { get; set; }
         public List<Expense.Expense>? Expenses { get; set; }
     }
 

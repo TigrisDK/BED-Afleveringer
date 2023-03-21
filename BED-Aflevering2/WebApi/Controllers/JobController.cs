@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Mapster;
 using WebApi.Models.Job;
 using WebApi.Models.Model;
-using AutoMapper;
-using WebApi.Models.Expense;
 
 namespace WebApi.Controllers
 {
@@ -17,84 +15,56 @@ namespace WebApi.Controllers
     public class JobController : ControllerBase 
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
 
-        public JobController(DataContext context, IMapper mapper)
+        public JobController(DataContext context)
         {
             _context= context;
-            _mapper = mapper;
-            //TypeAdapterConfig<JobPutDto, Job>.NewConfig().IgnoreNullValues(true);
+            TypeAdapterConfig<JobPutDto, Job>.NewConfig().IgnoreNullValues(true);
         }
 
-        // GET: api/Jobs
+        // get
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JobWModelNames>>> GetJobs()
+        public async Task<ActionResult<IEnumerable<Job>>> GetJobs()
         {
-            List<JobWModelNames> Jobs = new List<JobWModelNames>();
-            foreach (Job j in _context.Jobs)
-            {
-                _context.Entry(j).Collection(job => job.Models).Load();
-                JobWModelNames jobWModelNames = _mapper.Map<JobWModelNames>(j);
-                if (j.Models == null)
-                {
-                    Jobs.Add(jobWModelNames);
-                    break;
-                }
+            var jobs = await _context.Jobs.Include(j => j.Models).ToListAsync();
+            List<JobListModelNamesDto> jobsWithModelNames = jobs.Adapt<List<JobListModelNamesDto>>();
 
-                foreach(Model m in j.Models)
-                {
-                    string s = m.FirstName + " " + m.LastName;
-                    jobWModelNames.ModelNames.Add(s);
-                }
-                Jobs.Add(jobWModelNames);
-            }
-            return Jobs;
+            if (jobs == null) return NotFound();
+            return Ok(jobsWithModelNames);
         }
 
 
-        // GET: api/Jobs/5
+        // get api jobs id 
         [HttpGet("{id}")]
-        public async Task<ActionResult<JobDtoWExpenses>> GetJob(long id)
+        public async Task<ActionResult<Job>> GetJob(long id)
         {
             var job = await _context.Jobs.FindAsync(id);
             if (job == null)
             {
                 return NotFound();
             }
-            _context.Entry(job)
-                .Collection(j => j.Models)
-                .Load();
-            _context.Entry(job)
-                .Collection(j => j.Expenses)
-                .Load();
 
-            JobDtoWExpenses retJob = _mapper.Map<JobDtoWExpenses>(job);
-            retJob.Expenses = new List<ExpenseDto>();
-            foreach(Expense e in job.Expenses)
-            {
-                ExpenseDto eDto = _mapper.Map<ExpenseDto>(e);
-                retJob.Expenses.Add(eDto);
-            }
-            return retJob;
-            
+            return Ok(job.Adapt<JobListExpenseDto>());
         }
 
-        // PUT: api/Jobs/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<JobDtoSimple>> PutJob(long id, JobDtoUpdate job)
+        [HttpGet("model/{modelId}")]
+        public async Task<IList<ModelDtoFull>> GetJobModel(long modelId)
         {
-            Job? target = await _context.Jobs.FindAsync(id);
-            if (target == null)
+            var model = await _context.Models.Where(x => x.ModelId == modelId).ProjectToType<ModelDtoFull>().ToListAsync();
+            return model;
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutJob(long id, JobPutDto job)
+        {
+
+            if (id != job.JobId)
             {
-                return BadRequest();
+                return BadRequest("Id not match a job id");
             }
 
-            target.StartDate = job.StartDate;
-            target.Days = job.Days;
-            target.Location = job.Location;
-            target.Comments = job.Comments;
-
-            _context.Entry(target).State = EntityState.Modified;
+            _context.Entry(job.Adapt<Job>()).State = EntityState.Modified;
 
             try
             {
@@ -103,86 +73,23 @@ namespace WebApi.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!JobExists(id))
-                { 
-                    return NotFound();
+                {
+                    return NotFound("Job does not exist");
                 }
                 else
                 {
                     throw;
                 }
             }
-            JobDtoSimple retJ = _mapper.Map<JobDtoSimple>(target);
 
-            return retJ;
-        }
-
-        // POST: api/Jobs
-        [HttpPost]
-        public async Task<ActionResult<JobDtoNoId>> PostJob(JobDtoNoId job)
-        {
-            job.Models ??= new List<Model>();
-            job.Expenses ??= new List<Expense>();
-            _context.Jobs.Add(_mapper.Map<Job>(job));
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("PostJob", job);
-        }
-
-        // PUT: api/Jobs/AssignModel/1/2
-        [HttpPut]
-        [Route("api/Jobs/AssignModel/{jobId}/{modelId}")]
-        public async Task<ActionResult<Job>> PostAssignModel(long jobId, long modelId)
-        {
-            var model = _context.Models.Single(m => m.ModelId == modelId);
-            var job = _context.Jobs.Single(j => j.JobId == jobId);
-            _context.Entry(job).
-                Collection(j => j.Models)
-                .Load();
-
-            if (job.Models.Contains(model))
-            {
-                return Conflict("Model already assigned");
-            }
-
-            job.Models.Add(model);
-            await _context.SaveChangesAsync();
-
-            return Accepted($"Model {model.FirstName} assigned to {job.Customer}");
-        }
-
-        // PUT: api/Jobs/RemoveModel/1/2
-        [HttpPut]
-        [Route("api/Jobs/RemoveModel/{jobId}/{modelId}")]
-        public async Task<ActionResult<Job>> PostRemoveModel(long jobId, long modelId)
-        {
-            Job? job = _context.Jobs.Find(jobId);
-
-            Model? model = _context.Models.Find(modelId);
-            if (model == null || job == null)
-            {
-                if (model == null)
-                    return NotFound("ModelId not found");
-                return NotFound("JobId not found");
-            }
-            _context.Entry(job)
-                .Collection(j => j.Models)
-                .Load();
-
-            if (!job.Models.Contains(model))
-            {
-                return NotFound("Job does not have this ModelId assigned");
-            }
-            job.Models.Remove(model);
-            await _context.SaveChangesAsync();
-
-            return Accepted($"Model {model.FirstName} removed from job {job.Customer}");
+            return NoContent();
         }
 
         private bool JobExists(long id)
         {
             return _context.Jobs.Any(e => e.JobId == id);
         }
-        /*
+
         //Opret nyt job
         [HttpPost]
         public async Task<ActionResult<Job>> PostJob(JobDto job)
@@ -249,27 +156,6 @@ namespace WebApi.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
-        // PUT: api/Jobs/AssignModel/1/2
-        [HttpPut]
-        [Route("api/Jobs/AssignModel/{jobId}/{modelId}")]
-        public async Task<ActionResult<Job>> PostAssignModel(long jobId, long modelId)
-        {
-            var model = _context.Models.Single(m => m.ModelId == modelId);
-            var job = _context.Jobs.Single(j => j.JobId == jobId);
-            _context.Entry(job).
-                Collection(j => j.Models)
-                .Load();
-
-            if (job.Models.Contains(model))
-            {
-                return Conflict("Model already assigned");
-            }
-
-            job.Models.Add(model);
-            await _context.SaveChangesAsync();
-
-            return Accepted($"Model {model.FirstName} assigned to {job.Customer}");
-        }*/
 
     }
 }

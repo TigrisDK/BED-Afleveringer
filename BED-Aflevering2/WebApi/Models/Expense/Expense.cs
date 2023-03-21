@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApi.Models.Expense
 {
     public class Expense
     {
-        [Key]
+        
         public long ExpenseId { get; set; }
         public long ModelId { get; set; }
         public long JobId { get; set; }
