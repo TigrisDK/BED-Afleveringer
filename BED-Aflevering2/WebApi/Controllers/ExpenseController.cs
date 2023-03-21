@@ -7,6 +7,7 @@ using WebApi.Models.Model;
 using WebApi.Models.Job;
 using WebApi.Models.Expense;
 using System.Diagnostics.Metrics;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Controllers
 {
@@ -28,13 +29,13 @@ namespace WebApi.Controllers
         {
             _context.Expenses.Add(expense);
             await _context.SaveChangesAsync();
-
-            //adding counterhub
-            //await _context.AddAsync(_context.Expenses.Count());
-
+            var count = await _context.Expenses.CountAsync();
+            var hub= HttpContext.RequestServices.GetService<IHubContext<CountHub>>();
+            await hub.Clients.All.SendAsync("countUpdated", count );
             return CreatedAtAction("PostExpense", new { id = expense.ExpenseId }, expense);
 
         }
 
+       
     }
 }

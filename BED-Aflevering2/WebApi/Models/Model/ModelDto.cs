@@ -35,13 +35,6 @@ namespace WebApi.Models.Model
         [MaxLength(1000)]
         public string? Comments { get; set; }
 
-        //public List<Job.Job>? Jobs { get; set; }
-    }
-
-    public class ModelDto : ModelDtoFull
-    {
-        public List<JobListExpenseDto>? Jobs { get; set; }
-        public List<Expense.Expense>? Expenses { get; set; }
     }
 
     public class ModelNameDto
@@ -52,6 +45,5 @@ namespace WebApi.Models.Model
         [MaxLength(32)]
         public string? LastName { get; set; }
 
-       // public List<JobListExpenseDto>? Jobs { get; set; }
     }
 }

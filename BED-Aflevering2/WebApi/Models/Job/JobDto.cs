@@ -18,12 +18,6 @@ namespace WebApi.Models.Job
         
     }
 
-    public class JobListModelDto : JobDto
-    {
-        public List<Model.Model>? Models { get; set; }
-
-    }
-
     public class JobListModelNamesDto : JobDto
     {
         public List<ModelNameDto>? Models { get; set; }
