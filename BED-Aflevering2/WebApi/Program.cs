@@ -6,24 +6,15 @@ using WebApi.Hubs;
 using WebApi.Models.Expense;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers().AddJsonOptions(x =>
-x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
-);
-
-// Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<DataContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
-//builder.Services.AddSignalR();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers().AddJsonOptions(x =>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<DataContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSignalR();
-//builder.Services.AddSingleton<Expense>();
 
+//builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
@@ -33,6 +24,10 @@ if (app.Environment.IsDevelopment())
     Console.WriteLine("Dev Mode");
     app.UseSwagger();
     app.UseSwaggerUI();
+} else
+{
+    app.UseDeveloperExceptionPage();
+    app.UseMigrationsEndPoint();
 }
 
 using (var scope = app.Services.CreateScope())
@@ -46,10 +41,17 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRouting();
+app.MapControllers();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+});
+
+app.MapRazorPages();
 
 app.MapHub<CountHub>("/Hub");
 

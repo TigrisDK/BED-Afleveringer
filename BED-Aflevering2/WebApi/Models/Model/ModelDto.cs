@@ -7,37 +7,81 @@ using WebApi.Models.Job;
 
 namespace WebApi.Models.Model
 {
-    public class ModelDtoFull
+    public class ModelDto
     {
         public long ModelId { get; set; }
-        [MaxLength(64)]
         public string? FirstName { get; set; }
-        [MaxLength(32)]
         public string? LastName { get; set; }
-        [MaxLength(254)]
         public string? Email { get; set; }
-        [MaxLength(12)]
         public string? PhoneNo { get; set; }
-        [MaxLength(64)]
-        public string? AddressLine1 { get; set; }
-        [MaxLength(64)]
-        public string? AddressLine2 { get; set; }
-        [MaxLength(9)]
+
+        public string? AddresLine1 { get; set; }
+        public string? AddresLine2 { get; set; }
+
         public string? Zip { get; set; }
-        [MaxLength(64)]
+
         public string? City { get; set; }
-        [Column(TypeName = "date")]
+
         public DateTime BirthDay { get; set; }
         public double Height { get; set; }
         public int ShoeSize { get; set; }
-        [MaxLength(32)]
         public string? HairColor { get; set; }
-        [MaxLength(1000)]
         public string? Comments { get; set; }
-
-        //public List<Job.Job>? Jobs { get; set; }
     }
 
+    public class ModelDtoFull
+    {
+        public long ModelId { get; set; }
+        
+        public string? FirstName { get; set; }
+        
+        public string? LastName { get; set; }
+        
+        public string? Email { get; set; }
+        
+        public string? PhoneNo { get; set; }
+        
+        public string? AddressLine1 { get; set; }
+        
+        public string? AddressLine2 { get; set; }
+        
+        public string? Zip { get; set; }
+        
+        public string? City { get; set; }
+        
+        public DateTime BirthDay { get; set; }
+        public double Height { get; set; }
+        public int ShoeSize { get; set; }
+        
+        public string? HairColor { get; set; }
+        
+        public string? Comments { get; set; }
+
+        public List<Job.JobDtoSimple> Jobs { get; set; }
+        public List<Expense.ExpenseDto> Expenses { get; set; }
+    }
+
+    public class ModelDtoNoId
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNo { get; set; }
+
+        public string? AddresLine1 { get; set; }
+        public string? AddresLine2 { get; set; }
+
+        public string? Zip { get; set; }
+
+        public string? City { get; set; }
+
+        public DateTime BirthDay { get; set; }
+        public double Height { get; set; }
+        public int ShoeSize { get; set; }
+        public string? HairColor { get; set; }
+        public string? Comments { get; set; }
+    }
+    /*
     public class ModelDto : ModelDtoFull
     {
         public List<JobListExpenseDto>? Jobs { get; set; }
@@ -53,5 +97,5 @@ namespace WebApi.Models.Model
         public string? LastName { get; set; }
 
        // public List<JobListExpenseDto>? Jobs { get; set; }
-    }
+    }*/
 }
